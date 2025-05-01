@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL="http://localhost:4041/Blog-writer-api/admin"
+const BASE_URL="http://localhost:8081/Blog-Writer-01/admin"
 export const loginAdmin=async(credentials)=>{
     try{
       const responseData=await axios.post(`${BASE_URL}/login`,credentials);
