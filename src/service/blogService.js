@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL="http://localhost:8081/Blog-Writer-01/blog"
+const BASE_URL="http://localhost:8080/Blog-Writer-api/blog"
 export const updateBlog=async(blogId,editContent)=>{
     try{
       const responseData=await axios.put(`${BASE_URL}/update/${blogId}`,editContent);

@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL="http://localhost:8081/Blog-Writer-01/user"
+const BASE_URL="http://localhost:8080/Blog-Writer-api/user"
 export const  updateUserProfile=async(userId,formData)=>{
     try{
       const responseData=await axios.put(`${BASE_URL}/update-profile/${userId}`,formData);
