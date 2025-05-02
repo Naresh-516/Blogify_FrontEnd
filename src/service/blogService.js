@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL="http://localhost:8080/Blog-writer-api/blog"
+const BASE_URL=`${import.meta.env.VITE_BACKEND_URL}/blog`
 export const updateBlog=async(blogId,editContent)=>{
     try{
       const responseData=await axios.put(`${BASE_URL}/update/${blogId}`,editContent);
