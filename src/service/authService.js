@@ -1,6 +1,6 @@
 
 import axios from 'axios'
-  const BASE_URL="http://localhost:8080/Blog-Writer-api/user"
+  const BASE_URL="http://localhost:8080/Blog-writer-api/user"
 export const registerUser=async(userData)=>{
   try{
     const responseData=await axios.post(`${BASE_URL}/register`,userData);
