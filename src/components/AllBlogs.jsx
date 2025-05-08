@@ -51,7 +51,8 @@ function AllBlogs() {
             >
               <div>
                 <h2 className="font-extrabold text-2xl text-blue-800 mb-2">{blog.title}</h2>
-                <p className="text-gray-500 text-sm mb-4">Posted on: {new Date(blog.postedAt).toLocaleString()}</p>
+                <p className="text-gray-500 text-sm mb-4">Posted by: {blog.userName} , {new Date(blog.postedAt).toLocaleString()}</p>
+                
                 <p className="text-gray-700 mb-4 line-clamp-4">{blog.content}</p>
               </div>
               <div className="mt-auto">
