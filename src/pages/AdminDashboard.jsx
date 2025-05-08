@@ -6,7 +6,7 @@ function AdminDashboard() {
   return (
     <div className="flex">
       <AdminSidebar />
-      <div className="w-3/4 p-6">
+      <div className="flex-1 p-4 overflow-y-auto">
         <Outlet /> 
       </div>
     </div>

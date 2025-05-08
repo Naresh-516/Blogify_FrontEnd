@@ -9,7 +9,7 @@ const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    console.log(user);
+   
     if (user) {
       setFormData({
         id: user.id,

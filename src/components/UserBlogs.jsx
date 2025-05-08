@@ -12,12 +12,14 @@ function UserBlogs() {
   const [editingBlog, setEditingBlog] = useState(null);
   const [editContent, setEditContent] = useState({});
   const [userName, setUserName] = useState('');
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     fetchBlogs();
   }, []);
 
   const fetchBlogs = async () => {
+    setLoading(true); // Set loading to true before API call
     try {
       const blogs = await getuserBlogs(id);
       setAllBlogs(blogs.data || []);
@@ -27,6 +29,8 @@ function UserBlogs() {
     } catch (error) {
       console.error("Failed to fetch blogs", error);
       setAllBlogs([]);
+    } finally {
+      setLoading(false); // Set loading to false after API call
     }
   };
 
@@ -54,7 +58,7 @@ function UserBlogs() {
     try {
       const updatedBlog = { 
         ...editContent,
-        userId: id
+        userId: id,
       };
       await updateBlog(blogId, updatedBlog);
       toast.success("Blog updated successfully");
@@ -74,7 +78,9 @@ function UserBlogs() {
     <div className="bg-gradient-to-b from-amber-100 to-white min-h-screen py-10 px-4">
       <h2 className="text-indigo-700 text-3xl font-bold text-center mb-8">{userName} Blogs</h2>
 
-      {allBlogs.length === 0 ? (
+      {loading ? (
+        <h3 className="text-center text-xl font-bold mt-10">Loading Blogs...</h3> // Show loading message
+      ) : allBlogs.length === 0 ? (
         <h3 className="text-center text-xl font-bold mt-10">No Blogs Present</h3>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

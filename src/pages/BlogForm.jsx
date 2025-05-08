@@ -42,8 +42,9 @@ const BlogForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-300 to-white px-4">
-      <div className="w-full max-w-2xl bg-white p-8 rounded-2xl shadow-2xl border-2 border-blue-300">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-300 to-white px-2 ">
+
+      <div className="w-full bg-white p-8 rounded-2xl shadow-2xl border-2 border-blue-300">
         <h2 className="text-3xl font-extrabold text-center text-amber-700 mb-8">Write a Blog</h2>
 
         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>

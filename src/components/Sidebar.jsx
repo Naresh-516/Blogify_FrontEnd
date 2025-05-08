@@ -5,7 +5,7 @@ function Sidebar() {
   const { id } = useParams(); // Get user ID from URL
 
   return (
-    <div className="w-1/4 bg-gray-100 p-4 h-screen shadow-md">
+    <div className="w-1/4 bg-gray-100 p-4 h-screen shadow-md hidden md:block">
       <div className=" bg-gray-200 p-4 min-h-screen">
         <h1 className="text-2xl font-bold mb-4">User Dashboard</h1>
         <ul className="space-y-2">
