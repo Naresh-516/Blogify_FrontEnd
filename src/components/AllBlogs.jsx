@@ -1,30 +1,49 @@
 import React, { useEffect, useState } from 'react';
-import { getAllBlogs, deleteBlog, admindeleteBlog } from '../service/blogService';
+import { getAllBlogs, admindeleteBlog } from '../service/blogService';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 function AllBlogs() {
   const [allBlogs, setAllBlogs] = useState([]);
-  const [loading, setLoading] = useState(true); // ⬅️ loading state added
+  const [filteredBlogs, setFilteredBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const isAdminDashboard = location.pathname.includes('adminDashboard');
 
+  // ✅ Get search query from URL
+  const searchParams = new URLSearchParams(location.search);
+  const searchQuery = searchParams.get("search")?.toLowerCase() || "";
+
   const fetchBlogs = async () => {
-    setLoading(true); // start loading
+    setLoading(true);
     try {
       const blogs = await getAllBlogs();
-      setAllBlogs(blogs.data || []);
+      const blogList = blogs.data || [];
+      setAllBlogs(blogList);
+
+      // ✅ Filter blogs if search query is present
+      if (searchQuery) {
+        const filtered = blogList.filter((blog) =>
+          blog.title.toLowerCase().includes(searchQuery) ||
+          blog.content.toLowerCase().includes(searchQuery) ||
+          blog.tags.toLowerCase().includes(searchQuery)
+        );
+        setFilteredBlogs(filtered);
+      } else {
+        setFilteredBlogs(blogList);
+      }
     } catch (error) {
       console.error("Failed to fetch blogs", error);
       setAllBlogs([]);
+      setFilteredBlogs([]);
     } finally {
-      setLoading(false); // stop loading
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchBlogs();
-  }, []);
+  }, [searchQuery]); // ✅ refetch when search query changes
 
   const handleDelete = async (blogId) => {
     try {
@@ -39,25 +58,28 @@ function AllBlogs() {
   return (
     <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen py-10 px-4">
       {loading ? (
-        <h3 className="text-center text-xl font-bold mt-10">Loading blogs...</h3> // ⬅️ loading message
-      ) : allBlogs.length === 0 ? (
-        <h3 className="text-center text-xl font-bold mt-10">No Blogs Present</h3>
+        <h3 className="text-center text-xl font-bold mt-10">Loading blogs...</h3>
+      ) : filteredBlogs.length === 0 ? (
+        <h3 className="text-center text-xl font-bold mt-10">No Blogs Found</h3>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {allBlogs.map(blog => (
+          {filteredBlogs.map((blog) => (
             <div
               key={blog.id}
               className="p-6 bg-white rounded-2xl shadow-2xl border-2 border-blue-200 hover:shadow-blue-400 transition-all duration-300 overflow-hidden flex flex-col justify-between"
             >
               <div>
-                <h2 className="font-extrabold text-2xl text-blue-800 mb-2">{blog.title}</h2>
-                <p className="text-gray-500 text-sm mb-4">Posted by: {blog.userName} , {new Date(blog.postedAt).toLocaleString()}</p>
-                
+                <h2 className="font-extrabold text-2xl text-blue-800 mb-2">
+                  {blog.title}
+                </h2>
+                <p className="text-gray-500 text-sm mb-4">
+                  Posted by: {blog.userName}, {new Date(blog.postedAt).toLocaleString()}
+                </p>
                 <p className="text-gray-700 mb-4 line-clamp-4">{blog.content}</p>
               </div>
               <div className="mt-auto">
                 <p className="text-blue-500 italic text-sm mb-4">
-                  {blog.tags.split(",").map(tag => `#${tag.trim()} `)}
+                  {blog.tags.split(",").map((tag) => `#${tag.trim()} `)}
                 </p>
                 {isAdminDashboard && (
                   <button

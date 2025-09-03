@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { getAllUsers } from '../service/adminService';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 function ViewUsers() {
+  const {token}=useAuth();
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -12,8 +14,11 @@ function ViewUsers() {
   useEffect(() => {
     const fetchUsers = async () => {
       setIsLoading(true);
+      console.log(token)
       try {
-        const response = await getAllUsers();
+        const response = await getAllUsers(token);
+        console.log(response.data);
+     
         setUsers(response.data);
       } catch (error) {
         console.error("Failed to fetch users", error);
@@ -34,8 +39,8 @@ function ViewUsers() {
     setCurrentPage(pageNumber);
   };
 
-  const handleBlogs = (id, userName) => {
-    navigate(`/adminDashboard/view-users/${id}/blogs`, { state: { userName } });
+  const handleBlogs = (id) => {
+    navigate(`/adminDashboard/view-users/${id}/blogs`);
   };
 
   return (

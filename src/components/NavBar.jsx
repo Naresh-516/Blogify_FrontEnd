@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import login from '../assets/login.png';
 import register from '../assets/register.png';
@@ -7,8 +7,10 @@ import profile from '../assets/profile.png';
 
 function NavBar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, logout } = useAuth();
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleLogout = () => {
     logout();
@@ -19,9 +21,21 @@ function NavBar() {
     navigate('/home');
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim() !== "") {
+      navigate(`/home?search=${searchQuery}`);
+      setSearchQuery("");
+    }else{
+      navigate(`/home`)
+    }
+  };
+  const showSearch = location.pathname === "/" || location.pathname === "/home";
+
   return (
     <div>
-      <nav className="bg-blue-600 p-4 text-white flex flex-col items-center md:flex-row md:justify-between md:items-center gap-4">
+      <nav className="bg-blue-600 p-4 text-white flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+        {/* Logo */}
         <div
           className="text-2xl font-bold cursor-pointer"
           onClick={handleHome}
@@ -29,13 +43,37 @@ function NavBar() {
           Blogify
         </div>
 
+        {/* ✅ Search Bar only visible in /home */}
+        {showSearch && (
+          <form
+            onSubmit={handleSearch}
+            className="flex items-center gap-2 bg-white rounded-lg px-2 py-1 w-full md:w-1/3"
+          >
+            <input
+              type="text"
+              placeholder="Search blogs..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="flex-grow px-2 py-1 rounded-lg text-black outline-none"
+            />
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-400"
+            >
+              Search
+            </button>
+          </form>
+        )}
+
+        {/* Authenticated / Non-authenticated Navigation */}
         {user ? (
-        <div className="flex items-center justify-between gap-4 md:gap-10 w-full md:w-auto">
+          <div className="flex items-center justify-between gap-4 md:gap-10 w-full md:w-auto">
             <button onClick={handleHome} className="hover:underline">
               Home
             </button>
             <p>Hello, {user.name}</p>
 
+            {/* Profile Dropdown */}
             <div
               className="relative"
               onMouseEnter={() => setDropdownOpen(true)}

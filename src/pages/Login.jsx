@@ -24,7 +24,7 @@ const Login = () => {
       const response = await loginUser(values); 
      
       toast.success("Login successful!");
-      login(response.data,response.token);
+      login(response.data,response.data.token);
      
       resetForm();
      navigate(`/userDashboard/${response.data.id}`)

@@ -25,8 +25,9 @@ const UpdatePassword = () => {
   });
 
   const onSubmit = async (values, { resetForm }) => {
+    console.log(localStorage.getItem("token"));
     try {
-      await changePassword(id,values);
+      await changePassword(values);
       toast.success("Password updated successfully!");
       resetForm();
     } catch (error) {

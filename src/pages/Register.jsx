@@ -32,7 +32,8 @@ function Register() {
     onSubmit: async (values) => {
       try {
         const response = await registerUser(values);
-        toast.success('Registration Successful');
+       
+        toast.success(response.data);
         navigate('/user-login');
       } catch (error) {
         toast.error(error.response?.data || 'Registration failed');

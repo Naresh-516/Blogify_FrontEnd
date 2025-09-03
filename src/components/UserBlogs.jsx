@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getuserBlogs, deleteBlog, updateBlog } from '../service/blogService';
+import { getuserBlogs, deleteBlog, updateBlog, getuserBlogsByAdmin } from '../service/blogService';
 import { useParams, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -7,7 +7,7 @@ function UserBlogs() {
   const { id } = useParams();
   const location = useLocation();
   const isAdmin = location.pathname.includes('/admin');
-
+const token=localStorage.getItem("token");
   const [allBlogs, setAllBlogs] = useState([]);
   const [editingBlog, setEditingBlog] = useState(null);
   const [editContent, setEditContent] = useState({});
@@ -20,8 +20,9 @@ function UserBlogs() {
 
   const fetchBlogs = async () => {
     setLoading(true); // Set loading to true before API call
-    try {
-      const blogs = await getuserBlogs(id);
+    if(isAdmin){
+try {
+      const blogs = await getuserBlogsByAdmin(id,token);
       setAllBlogs(blogs.data || []);
       if (blogs.data.length > 0) {
         setUserName(blogs.data[0]?.userName || '');
@@ -31,6 +32,20 @@ function UserBlogs() {
       setAllBlogs([]);
     } finally {
       setLoading(false); // Set loading to false after API call
+    }
+    }else{
+      try {
+      const blogs = await getuserBlogs();
+      setAllBlogs(blogs.data || []);
+      if (blogs.data.length > 0) {
+        setUserName(blogs.data[0]?.userName || '');
+      }
+    } catch (error) {
+      console.error("Failed to fetch blogs", error);
+      setAllBlogs([]);
+    } finally {
+      setLoading(false); // Set loading to false after API call
+    }
     }
   };
 

@@ -5,7 +5,7 @@ export const AuthProvider=({children})=>{
     const[user,setUser]=useState(()=>{
         const savedUser=localStorage.getItem("user") ;
          return savedUser?JSON.parse(savedUser):null; })
-    const[token,setToken]=useState(()=>localStorage.getItem("token"||""));
+    const [token, setToken] = useState(() => localStorage.getItem("token") || "");
 
     const login=(userData,tokenData)=>{
         localStorage.setItem("user",JSON.stringify(userData));

@@ -24,8 +24,7 @@ const AdminLogin = () => {
       const response = await loginAdmin(values); 
      
       toast.success("Login successful!");
-      login(response.data,response.token);
-     
+     login(response.data, response.data.token);
       resetForm();
      navigate(`/AdminDashboard`)
     } catch (error) {

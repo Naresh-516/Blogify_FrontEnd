@@ -8,7 +8,6 @@ import { ToastContainer } from 'react-toastify'
 import UserDashboard from './pages/UserDashboard'
 import 'react-toastify/dist/ReactToastify.css'
 import AllBlogs from './components/AllBlogs'
-import UserBlogs from './components/UserBlogs'
 import UserProfile from './components/UserProfile'
 import UpdatePassword from './components/UpdatePassword'
 import DeleteAccount from './components/DeleteAccount'
@@ -16,6 +15,8 @@ import AdminLogin from './pages/AdminLogin'
 import AdminDashboard from './pages/AdminDashboard'
 import ViewUsers from './components/ViewUsers'
 import DeletedBlogs from './components/DeletedBlogs'
+import UserBlogs from './components/userBlogs'
+
 function App() {
 
   return (

@@ -30,8 +30,8 @@ const UserProfile = () => {
 
   const handleUpdate = async () => {
     try {
-      const response=await updateUserProfile(user.id, formData);
-      login(response.data,response.token);
+      const response=await updateUserProfile(formData);
+      login(response.data,localStorage.getItem("token"));
       toast.success("Profile updated successfully");
       setIsEditing(false);
     } catch (err) {
