@@ -26,7 +26,6 @@ const BlogForm = () => {
       title: values.title,
       content: values.content,
       tags: values.tags,
-      userId: id,
     };
   
     try {
