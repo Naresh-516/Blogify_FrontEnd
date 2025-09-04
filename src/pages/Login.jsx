@@ -19,19 +19,30 @@ const Login = () => {
     email: "",
     password: "",
   };
-  const handleSubmit = async (values, { resetForm }) => {
-    try {
-      const response = await loginUser(values); 
-     console.log(response);
-      toast.success("Login successful!");
-      login(response.data,response.data.token);
-     
-    resetForm();
-     navigate(`/userDashboard/${response.data.id}`)
-    } catch (error) {
-      toast.error(error);
+ const handleSubmit = async (values, { resetForm }) => {
+  try {
+    const response = await loginUser(values);
+
+    console.log("Full API response:", response);
+    console.log("response.data:", response.data);
+    console.log("response.data.token:", response.data?.token);
+
+    const token = response.data?.token;
+    if (!token) {
+      toast.error("No token received from backend!");
+      return;
     }
-  };
+
+    toast.success("Login successful!");
+    login(response.data, token);
+
+    resetForm();
+    navigate(`/userDashboard/${response.data.id}`);
+  } catch (error) {
+    console.error("Login error:", error);
+    toast.error(error);
+  }
+};
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded">
