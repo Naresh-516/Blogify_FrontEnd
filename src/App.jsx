@@ -15,7 +15,7 @@ import AdminLogin from './pages/AdminLogin'
 import AdminDashboard from './pages/AdminDashboard'
 import ViewUsers from './components/ViewUsers'
 import DeletedBlogs from './components/DeletedBlogs'
-import UserBlogs from './components/userBlogs'
+import UserBlogs from './components/UserBlogs'
 
 function App() {
 
