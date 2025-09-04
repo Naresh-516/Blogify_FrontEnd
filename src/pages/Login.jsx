@@ -22,11 +22,11 @@ const Login = () => {
   const handleSubmit = async (values, { resetForm }) => {
     try {
       const response = await loginUser(values); 
-     
+     console.log(response);
       toast.success("Login successful!");
-      login(response.data.token,response.data.token);
+      login(response.data,response.data.token);
      
-      resetForm();
+    resetForm();
      navigate(`/userDashboard/${response.data.id}`)
     } catch (error) {
       toast.error(error);
