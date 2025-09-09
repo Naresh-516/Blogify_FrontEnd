@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getBlogById, addComment, editComment, deleteComment, toggleLike } from '../service/blogService';
 import { toast } from 'react-toastify';
-import likeIcon from '../assets/like.png';
-import likedIcon from '../assets/liked.png';
+import likeIcon from '../assets/Like.png';
+import likedIcon from '../assets/Liked.png';
 
 
 function Blog() {
