@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import likeIcon from '../assets/like.png';
 import likedIcon from '../assets/liked.png';
 
+
 function Blog() {
     const { blogId } = useParams();
     const [blog, setBlog] = useState(null);

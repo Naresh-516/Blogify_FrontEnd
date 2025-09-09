@@ -4,9 +4,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 // ✅ Import images
-import likeIcon from '../assets/like.png';
-import likedIcon from '../assets/liked.png';
-import commentIcon from '../assets/comment.png';
+import likeIcon from '../assets/Like.png';
+import likedIcon from '../assets/Liked.png';
+import commentIcon from '../assets/Comment.png';
 
 function AllBlogs() {
   const [allBlogs, setAllBlogs] = useState([]);
