@@ -106,4 +106,85 @@ export const updateBlog=async(blogId,editContent)=>{
       throw error.response?.data?.message||"unable to fetch";
     }
   };
+  export const getBlogById = async (blogId) => {
+    const token = localStorage.getItem("token");
+    return await axios.get(`${BASE_URL}/getblog/${blogId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+};
+export const toggleLike = async (blogId) => {
+    try {
+        const token = localStorage.getItem("token");
+        const responseData = await axios.post(
+            `${BASE_URL}/${blogId}/like-toggle`, // Correct URL
+            {}, // Empty body if not sending any data
+            {
+                headers: { 
+                    Authorization: `Bearer ${token}`, // Token here
+                    "Content-Type": "application/json", // optional
+                },
+            }
+        );
+        return responseData;
+    } catch (error) {
+        throw error.response?.data?.message || "Unable to like";
+    }
+};
+
+
+  export const addComment=async(comment)=>{
+    try{
+       const token = localStorage.getItem("token");
+      const responseData=await axios.post(`${BASE_URL}/comment`,comment,{
+        headers: { 
+          Authorization: `Bearer ${token}`, // <-- send the token here  
+          "Content-Type": "application/json", // optional if sending JSON
+        },      
+      });
+      return responseData;
+    }   
+    catch(error){
+      throw error.response?.data?.message||"unable to add comment";
+    }   
+  };
+  export const editComment = async (commentId, blogId, updatedContent) => {
+    try {
+        const token = localStorage.getItem("token");
+        const requestBody = {
+            blogId: blogId,
+            commentId: commentId,
+            updatedContent: updatedContent
+        };
+        const responseData = await axios.put(`${BASE_URL}/editcomment`, requestBody, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        });
+        return responseData;
+    } catch (error) {
+        throw error.response?.data?.message || "Unable to edit comment";
+    }
+};
+export const deleteComment = async (blogId, commentId) => {
+    try {
+        const token = localStorage.getItem("token");
+        const responseData = await axios.delete(
+            `${BASE_URL}/deletecomment/${blogId}/${commentId}`, // <-- fixed URL
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        return responseData;
+    } catch (error) {
+        throw error.response?.data?.message || "Unable to Delete comment";
+    }
+};
+
+  
   

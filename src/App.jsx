@@ -16,6 +16,7 @@ import AdminDashboard from './pages/AdminDashboard'
 import ViewUsers from './components/ViewUsers'
 import DeletedBlogs from './components/DeletedBlogs'
 import UserBlogs from './components/UserBlogs'
+import Blog from './components/Blog'
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
       <Routes>
       <Route path="/" element={<AllBlogs/>} />
       <Route path="/home" element={<AllBlogs/>} />
+      <Route path="blog/:blogId" element={<Blog/>}/>
         <Route path="user-login" element={<Login/>}/>
         <Route path="register" element={<Register/>}/>
         <Route path="userDashboard/:id" element={<UserDashboard/>}>

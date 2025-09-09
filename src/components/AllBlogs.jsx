@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { getAllBlogs, admindeleteBlog } from '../service/blogService';
-import { useLocation } from 'react-router-dom';
+import { getAllBlogs, admindeleteBlog,toggleLike } from '../service/blogService';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+
+// ✅ Import images
+import likeIcon from '../assets/like.png';
+import likedIcon from '../assets/liked.png';
+import commentIcon from '../assets/comment.png';
 
 function AllBlogs() {
   const [allBlogs, setAllBlogs] = useState([]);
+  const [likeLoading, setLikeLoading] = useState(false);
   const [filteredBlogs, setFilteredBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const navigate = useNavigate();
   const isAdminDashboard = location.pathname.includes('adminDashboard');
-
-  // ✅ Get search query from URL
+  const user = JSON.parse(localStorage.getItem("user"));
+const userId = user?.id;
+  
   const searchParams = new URLSearchParams(location.search);
   const searchQuery = searchParams.get("search")?.toLowerCase() || "";
 
@@ -21,7 +29,6 @@ function AllBlogs() {
       const blogList = blogs.data || [];
       setAllBlogs(blogList);
 
-      // ✅ Filter blogs if search query is present
       if (searchQuery) {
         const filtered = blogList.filter((blog) =>
           blog.title.toLowerCase().includes(searchQuery) ||
@@ -43,7 +50,7 @@ function AllBlogs() {
 
   useEffect(() => {
     fetchBlogs();
-  }, [searchQuery]); // ✅ refetch when search query changes
+  }, [searchQuery]);
 
   const handleDelete = async (blogId) => {
     try {
@@ -53,6 +60,31 @@ function AllBlogs() {
     } catch (error) {
       toast.error("Failed to delete blog");
     }
+  };
+
+
+   const handleLikeToggle = async (blogId) => {
+    if (likeLoading) return;
+    setLikeLoading(true);
+    try {
+        const response = await toggleLike(blogId);  // one API call
+        toast.success("Like status updated!");
+        console.log("Updated Blog:", response.data);
+        setFilteredBlogs(prevBlogs =>
+            prevBlogs.map(b =>
+                b.id === blogId ? response.data : b
+            )
+        );
+    } catch (error) {
+        console.error("Error toggling like:", error);
+        toast.error("Failed to update like");
+    } finally {
+        setLikeLoading(false);
+    }
+};
+  // ✅ Navigate to comment page
+  const handleComment = (blogId) => {
+    navigate(`/blog/${blogId}`);
   };
 
   return (
@@ -79,16 +111,44 @@ function AllBlogs() {
               </div>
               <div className="mt-auto">
                 <p className="text-blue-500 italic text-sm mb-4">
-                  {blog.tags.split(",").map((tag) => `#${tag.trim()} `)}
+                  {blog.tags.split(",").map((tag, index) => (
+                    <span key={index}>#{tag.trim()} </span>
+                  ))}
                 </p>
-                {isAdminDashboard && (
-                  <button
-                    className="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-full w-full transition-all"
-                    onClick={() => handleDelete(blog.id)}
-                  >
-                    Delete
-                  </button>
-                )}
+                <div className="flex items-center justify-between">
+                  {/* ✅ Like Button */}
+                  <div className="flex items-center space-x-2">
+                    <img
+                    
+                     src={blog.likedUsers?.includes(userId)? likedIcon : likeIcon}
+                      alt="like button"
+                      className="w-6 h-6 cursor-pointer"
+                      onClick={() => handleLikeToggle(blog.id)}
+                    />
+                    <span>{blog.likeCount}</span>
+                  </div>
+
+                  {/* ✅ Comment Button */}
+                  <div className="flex items-center space-x-2">
+                    <img
+                      src={commentIcon}
+                      alt="comment button"
+                      className="w-6 h-6 cursor-pointer"
+                      onClick={() => handleComment(blog.id)}
+                    />
+                    <span>{blog.comments.length || 0}</span>
+                  </div>
+
+                  {/* ✅ Admin Delete Button */}
+                  {isAdminDashboard && (
+                    <button
+                      className="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-full transition-all"
+                      onClick={() => handleDelete(blog.id)}
+                    >
+                      Delete
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           ))}
