@@ -30,7 +30,7 @@ function DeletedBlogs() {
             <div>
               <h2 className="font-extrabold text-2xl text-amber-800 mb-2">{blog.title}</h2>
               <p className="text-gray-500 text-sm mb-4">Posted on: {new Date(blog.postedAt).toLocaleString()}</p>
-              <p className="text-gray-700 mb-4 line-clamp-4">{blog.content}</p>
+              <p className="text-gray-700 mb-4 max-h-32 overflow-y-auto pr-2">{blog.content}</p>
             </div>
             <div className="mt-auto">
               <p className="text-amber-600 italic text-sm mb-4">

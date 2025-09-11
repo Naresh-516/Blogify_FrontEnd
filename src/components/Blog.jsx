@@ -161,7 +161,7 @@ function Blog() {
                                 </>
                             ) : (
                                 <>
-                                    <p className="text-gray-700">{comment.content}</p>
+                                    <p className="text-gray-700 overflow-y-auto pr-20">{comment.content}</p>
                                     <p className="text-xs text-gray-400">{new Date(comment.timestamp).toLocaleString()}</p>
                                     {comment.userId === userId && (
                                         <div className="flex space-x-2 mt-1">

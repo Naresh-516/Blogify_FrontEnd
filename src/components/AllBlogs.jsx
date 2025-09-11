@@ -3,7 +3,6 @@ import { getAllBlogs, admindeleteBlog,toggleLike } from '../service/blogService'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-// ✅ Import images
 import likeIcon from '../assets/Like.png';
 import likedIcon from '../assets/Liked.png';
 import commentIcon from '../assets/Comment.png';
@@ -33,7 +32,8 @@ const userId = user?.id;
         const filtered = blogList.filter((blog) =>
           blog.title.toLowerCase().includes(searchQuery) ||
           blog.content.toLowerCase().includes(searchQuery) ||
-          blog.tags.toLowerCase().includes(searchQuery)
+          blog.tags.toLowerCase().includes(searchQuery)||
+          blog.userName.toLowerCase().includes(searchQuery)
         );
         setFilteredBlogs(filtered);
       } else {
@@ -107,7 +107,7 @@ const userId = user?.id;
                 <p className="text-gray-500 text-sm mb-4">
                   Posted by: {blog.userName}, {new Date(blog.postedAt).toLocaleString()}
                 </p>
-                <p className="text-gray-700 mb-4 line-clamp-4">{blog.content}</p>
+                <p className="text-gray-700 mb-4 max-h-32 overflow-y-auto pr-2">{blog.content}</p>
               </div>
               <div className="mt-auto">
                 <p className="text-blue-500 italic text-sm mb-4">
